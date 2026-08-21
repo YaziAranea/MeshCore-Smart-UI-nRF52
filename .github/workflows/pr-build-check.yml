@@ -1,55 +1,59 @@
-name: PR Build Check
+name: SmartUI CI
 
 on:
-  pull_request:
-    branches: [main, dev]
-    paths:
-      - 'src/**'
-      - 'examples/**'
-      - 'variants/**'
-      - 'platformio.ini'
-      - '.github/workflows/pr-build-check.yml'
   push:
-    branches: [main, dev]
-    paths:
-      - 'src/**'
-      - 'examples/**'
-      - 'variants/**'
-      - 'platformio.ini'
-      - '.github/workflows/pr-build-check.yml'
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
+    name: Build ${{ matrix.environment }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         environment:
-          # ESP32-S3 (most common platform)
-          - Heltec_v3_companion_radio_ble
-          - Heltec_v3_repeater
-          - Heltec_v3_room_server
-          # nRF52
-          - RAK_4631_companion_radio_ble
-          - RAK_4631_repeater
-          - RAK_4631_room_server
-          # RP2040
-          - PicoW_repeater
-          # STM32
-          - wio-e5-mini_repeater
-          # ESP32-C6
-          - LilyGo_Tlora_C6_repeater_
-          # LR1110 (nRF52)
-          - wio_wm1110_repeater
-          # SX1276 (ESP32)
-          - Tbeam_SX1276_repeater
+          - Heltec_t096_companion_radio_ble_femon
+          - Heltec_t114_companion_radio_ble
+          - ProMicro_ra62_companion_radio_ble
 
     steps:
-      - name: Clone Repo
-        uses: actions/checkout@v6
+      - name: Check out source
+        uses: actions/checkout@v4
 
-      - name: Setup Build Environment
+      - name: Set up build environment
         uses: ./.github/actions/setup-build-environment
 
-      - name: Build ${{ matrix.environment }}
-        run: pio run -e ${{ matrix.environment }}
+      - name: Build firmware
+        run: pio run -e "${{ matrix.environment }}"
+
+      - name: Validate UF2 generation
+        run: pio run -e "${{ matrix.environment }}" -t create_uf2
+
+  qa:
+    name: Static and framebuffer QA
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install QA dependencies
+        run: python -m pip install --requirement requirements-qa.txt
+
+      - name: Audit the three-board UI contract
+        run: python tools/audit_exp45_ui_contract.py
+
+      - name: Run exact framebuffer simulation
+        run: python tools/simulate_exp45_ui_qa.py

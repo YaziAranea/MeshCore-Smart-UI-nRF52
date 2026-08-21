@@ -126,10 +126,13 @@ void setup() {
   if (display.begin()) {
     disp = &display;
     disp->startFrame();
-  #ifdef ST7789
+#if UI_T096_PREMIUM_TFT
     disp->setTextSize(2);
-  #endif
-    disp->drawTextCentered(disp->width() / 2, 28, "Loading...");
+#elif defined(ST7789)
+    disp->setTextSize(2);
+#endif
+    disp->setColor(DisplayDriver::YELLOW);
+    disp->drawTextCentered(disp->width() / 2, (disp->height() - 16) / 2, "Загрузка");
     disp->endFrame();
   }
 #endif

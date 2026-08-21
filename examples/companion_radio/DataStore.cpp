@@ -234,6 +234,42 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
     file.read((uint8_t *)_prefs.default_scope_name, sizeof(_prefs.default_scope_name));    // 90
     file.read((uint8_t *)_prefs.default_scope_key, sizeof(_prefs.default_scope_key));     // 121
     file.read((uint8_t *)&_prefs.radio_fem_rxgain, sizeof(_prefs.radio_fem_rxgain));      // 122
+    file.read((uint8_t *)&_prefs.adc_multiplier, sizeof(_prefs.adc_multiplier));           // 123
+    file.read((uint8_t *)&_prefs.notify_mode, sizeof(_prefs.notify_mode));                 // 127
+    file.read((uint8_t *)&_prefs.notify_gpio_pin, sizeof(_prefs.notify_gpio_pin));         // 128
+    file.read((uint8_t *)&_prefs.notify_tone_pin, sizeof(_prefs.notify_tone_pin));         // 129
+    file.read((uint8_t *)&_prefs.notify_tone_id, sizeof(_prefs.notify_tone_id));           // 130
+    file.read((uint8_t *)&_prefs.notify_tone_volume, sizeof(_prefs.notify_tone_volume));   // 131
+    file.read((uint8_t *)&_prefs.auto_advert_interval_mins, sizeof(_prefs.auto_advert_interval_mins));
+    file.read((uint8_t *)&_prefs.ch2_mode, sizeof(_prefs.ch2_mode));
+    file.read((uint8_t *)&_prefs.board_leds_enabled, sizeof(_prefs.board_leds_enabled));
+    file.read((uint8_t *)&_prefs.ui_font, sizeof(_prefs.ui_font));
+    file.read((uint8_t *)&_prefs.ui_theme, sizeof(_prefs.ui_theme));
+    file.read((uint8_t *)&_prefs.unread_led_enabled, sizeof(_prefs.unread_led_enabled));
+    file.read((uint8_t *)&_prefs.msg_popup_enabled, sizeof(_prefs.msg_popup_enabled));
+    file.read((uint8_t *)&_prefs.important_notify_mode, sizeof(_prefs.important_notify_mode));
+    file.read((uint8_t *)&_prefs.notifications_muted, sizeof(_prefs.notifications_muted));
+    file.read((uint8_t *)&_prefs.ui_top_color, sizeof(_prefs.ui_top_color));
+    file.read((uint8_t *)&_prefs.ui_bottom_color, sizeof(_prefs.ui_bottom_color));
+    file.read((uint8_t *)&_prefs.backlight_timeout_idx, sizeof(_prefs.backlight_timeout_idx));
+    file.read((uint8_t *)&_prefs.notify_vibe_pin, sizeof(_prefs.notify_vibe_pin));
+    file.read((uint8_t *)&_prefs.offline_dm_led_enabled, sizeof(_prefs.offline_dm_led_enabled));
+    file.read((uint8_t *)&_prefs.ble_dm_led_enabled, sizeof(_prefs.ble_dm_led_enabled));
+    file.read((uint8_t *)&_prefs.low_battery_shutdown_enabled, sizeof(_prefs.low_battery_shutdown_enabled));
+    file.read((uint8_t *)&_prefs.notify_tone_bridge_enabled, sizeof(_prefs.notify_tone_bridge_enabled));
+    file.read((uint8_t *)&_prefs.notify_tone_8bit_enabled, sizeof(_prefs.notify_tone_8bit_enabled));
+    file.read((uint8_t *)&_prefs.notify_tone_high_drive_enabled, sizeof(_prefs.notify_tone_high_drive_enabled));
+    file.read((uint8_t *)&_prefs.notify_tone_resonance_hz, sizeof(_prefs.notify_tone_resonance_hz));
+    file.read((uint8_t *)&_prefs.notify_tone_dm_id, sizeof(_prefs.notify_tone_dm_id));
+    file.read((uint8_t *)&_prefs.notify_tone_mention_id, sizeof(_prefs.notify_tone_mention_id));
+    file.read((uint8_t *)&_prefs.notify_tone_system_id, sizeof(_prefs.notify_tone_system_id));
+    file.read((uint8_t *)&_prefs.smart_profile_id, sizeof(_prefs.smart_profile_id));
+    file.read((uint8_t *)&_prefs.favorite_setting_1, sizeof(_prefs.favorite_setting_1));
+    file.read((uint8_t *)&_prefs.favorite_setting_2, sizeof(_prefs.favorite_setting_2));
+    file.read((uint8_t *)&_prefs.favorite_setting_3, sizeof(_prefs.favorite_setting_3));
+    file.read((uint8_t *)&_prefs.night_prompt_day, sizeof(_prefs.night_prompt_day));
+    file.read((uint8_t *)&_prefs.night_quiet_active, sizeof(_prefs.night_quiet_active));
+    file.read((uint8_t *)&_prefs.gps_source, sizeof(_prefs.gps_source));
 
     file.close();
   }
@@ -275,7 +311,44 @@ void DataStore::savePrefs(const NodePrefs& _prefs, double node_lat, double node_
     file.write((uint8_t *)_prefs.default_scope_name, sizeof(_prefs.default_scope_name));    // 90
     file.write((uint8_t *)_prefs.default_scope_key, sizeof(_prefs.default_scope_key));     // 121
     file.write((uint8_t *)&_prefs.radio_fem_rxgain, sizeof(_prefs.radio_fem_rxgain));      // 122
+    file.write((uint8_t *)&_prefs.adc_multiplier, sizeof(_prefs.adc_multiplier));           // 123
+    file.write((uint8_t *)&_prefs.notify_mode, sizeof(_prefs.notify_mode));                 // 127
+    file.write((uint8_t *)&_prefs.notify_gpio_pin, sizeof(_prefs.notify_gpio_pin));         // 128
+    file.write((uint8_t *)&_prefs.notify_tone_pin, sizeof(_prefs.notify_tone_pin));         // 129
+    file.write((uint8_t *)&_prefs.notify_tone_id, sizeof(_prefs.notify_tone_id));           // 130
+    file.write((uint8_t *)&_prefs.notify_tone_volume, sizeof(_prefs.notify_tone_volume));   // 131
+    file.write((uint8_t *)&_prefs.auto_advert_interval_mins, sizeof(_prefs.auto_advert_interval_mins));
+    file.write((uint8_t *)&_prefs.ch2_mode, sizeof(_prefs.ch2_mode));
+    file.write((uint8_t *)&_prefs.board_leds_enabled, sizeof(_prefs.board_leds_enabled));
+    file.write((uint8_t *)&_prefs.ui_font, sizeof(_prefs.ui_font));
+    file.write((uint8_t *)&_prefs.ui_theme, sizeof(_prefs.ui_theme));
+    file.write((uint8_t *)&_prefs.unread_led_enabled, sizeof(_prefs.unread_led_enabled));
+    file.write((uint8_t *)&_prefs.msg_popup_enabled, sizeof(_prefs.msg_popup_enabled));
+    file.write((uint8_t *)&_prefs.important_notify_mode, sizeof(_prefs.important_notify_mode));
+    file.write((uint8_t *)&_prefs.notifications_muted, sizeof(_prefs.notifications_muted));
+    file.write((uint8_t *)&_prefs.ui_top_color, sizeof(_prefs.ui_top_color));
+    file.write((uint8_t *)&_prefs.ui_bottom_color, sizeof(_prefs.ui_bottom_color));
+    file.write((uint8_t *)&_prefs.backlight_timeout_idx, sizeof(_prefs.backlight_timeout_idx));
+    file.write((uint8_t *)&_prefs.notify_vibe_pin, sizeof(_prefs.notify_vibe_pin));
+    file.write((uint8_t *)&_prefs.offline_dm_led_enabled, sizeof(_prefs.offline_dm_led_enabled));
+    file.write((uint8_t *)&_prefs.ble_dm_led_enabled, sizeof(_prefs.ble_dm_led_enabled));
+    file.write((uint8_t *)&_prefs.low_battery_shutdown_enabled, sizeof(_prefs.low_battery_shutdown_enabled));
+    file.write((uint8_t *)&_prefs.notify_tone_bridge_enabled, sizeof(_prefs.notify_tone_bridge_enabled));
+    file.write((uint8_t *)&_prefs.notify_tone_8bit_enabled, sizeof(_prefs.notify_tone_8bit_enabled));
+    file.write((uint8_t *)&_prefs.notify_tone_high_drive_enabled, sizeof(_prefs.notify_tone_high_drive_enabled));
+    file.write((uint8_t *)&_prefs.notify_tone_resonance_hz, sizeof(_prefs.notify_tone_resonance_hz));
+    file.write((uint8_t *)&_prefs.notify_tone_dm_id, sizeof(_prefs.notify_tone_dm_id));
+    file.write((uint8_t *)&_prefs.notify_tone_mention_id, sizeof(_prefs.notify_tone_mention_id));
+    file.write((uint8_t *)&_prefs.notify_tone_system_id, sizeof(_prefs.notify_tone_system_id));
+    file.write((uint8_t *)&_prefs.smart_profile_id, sizeof(_prefs.smart_profile_id));
+    file.write((uint8_t *)&_prefs.favorite_setting_1, sizeof(_prefs.favorite_setting_1));
+    file.write((uint8_t *)&_prefs.favorite_setting_2, sizeof(_prefs.favorite_setting_2));
+    file.write((uint8_t *)&_prefs.favorite_setting_3, sizeof(_prefs.favorite_setting_3));
+    file.write((uint8_t *)&_prefs.night_prompt_day, sizeof(_prefs.night_prompt_day));
+    file.write((uint8_t *)&_prefs.night_quiet_active, sizeof(_prefs.night_quiet_active));
+    file.write((uint8_t *)&_prefs.gps_source, sizeof(_prefs.gps_source));
 
+    file.flush();
     file.close();
   }
 }

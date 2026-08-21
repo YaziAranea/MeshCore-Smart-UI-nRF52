@@ -22,6 +22,11 @@ enum class UIEventType {
     ack
 };
 
+#define UI_MSG_FLAG_NONE     0x00
+#define UI_MSG_FLAG_DIRECT   0x01
+#define UI_MSG_FLAG_MENTION  0x02
+#define UI_MSG_FLAG_IMPORTANT 0x04
+
 class AbstractUITask {
 protected:
   mesh::MainBoard* _board;
@@ -35,12 +40,20 @@ protected:
 public:
   void setHasConnection(bool connected) { _connected = connected; }
   bool hasConnection() const { return _connected; }
-  uint16_t getBattMilliVolts() const { return _board->getBattMilliVolts(); }
+  virtual uint16_t getBattMilliVolts() const { return _board->getBattMilliVolts(); }
   bool isSerialEnabled() const { return _serial->isEnabled(); }
   void enableSerial() { _serial->enable(); }
   void disableSerial() { _serial->disable(); }
   virtual void msgRead(int msgcount) = 0;
-  virtual void newMsg(uint8_t path_len, const char* from_name, const char* text, int msgcount) = 0;
+  virtual void msgRead(int msgcount, bool dismiss_notification) {
+    (void)dismiss_notification;
+    msgRead(msgcount);
+  }
+  virtual void directMsgRead(bool dismiss_notification) {
+    (void)dismiss_notification;
+  }
+  virtual void newMsg(uint8_t path_len, const char* from_name, const char* text, int msgcount, uint8_t flags = UI_MSG_FLAG_NONE) = 0;
   virtual void notify(UIEventType t = UIEventType::none) = 0;
+  virtual void applyImportedPrefs() {}
   virtual void loop() = 0;
 };

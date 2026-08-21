@@ -280,6 +280,16 @@ void NRF52Board::sleep(uint32_t secs) {
 
 // Temperature from NRF52 MCU
 float NRF52Board::getMCUTemperature() {
+  uint8_t sd_enabled = 0;
+  sd_softdevice_is_enabled(&sd_enabled);
+  if (sd_enabled) {
+    int32_t temp = 0; // In 0.25 *C units
+    if (sd_temp_get(&temp) == NRF_SUCCESS) {
+      return temp * 0.25f;
+    }
+    return NAN;
+  }
+
   NRF_TEMP->TASKS_START = 1; // Start temperature measurement
 
   long startTime = millis();  
